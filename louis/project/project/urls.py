@@ -20,11 +20,19 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
+
+from django.contrib.auth.views import(
+    LoginView,
+    LogoutView,
+    )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog.urls', namespace='blog'))
+    path('', include('blog.urls', namespace='blog')),
+    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
 ]
 
 if settings.DEBUG:
