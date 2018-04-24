@@ -4,6 +4,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.views import View
 
+from .forms import PostForm
+
 from .models import Category, Tag, Post
 
 # Create your views here.
