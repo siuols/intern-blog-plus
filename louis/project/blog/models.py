@@ -20,6 +20,10 @@ class Tag(models.Model):
     def __str__(self):
         return '{}'.format(self.title)
 
+    @property
+    def slug_title(self):
+        return '{}'.format(self.title)
+
 class Category(models.Model):
     user                    = models.ForeignKey(User, on_delete=models.CASCADE)
     title                   = models.CharField(max_length=120)
@@ -28,6 +32,10 @@ class Category(models.Model):
     slug                    = models.SlugField(null=True, blank=True)
 
     def __str__(self):
+        return '{}'.format(self.title)
+
+    @property
+    def slug_title(self):
         return '{}'.format(self.title)
 
 STATUS_CHOICES = (
@@ -56,15 +64,17 @@ class Post(models.Model):
     def __str__(self):
         return '{}'.format(self.title)
 
-    @property
-    def title(self):
-        return '{}'.format(self.title)
-
     class Meta:
         ordering = ['-id']
+
+    @property
+    def slug_title(self):
+        return '{}'.format(self.title)
 
 def rl_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
 pre_save.connect(rl_pre_save_receiver, sender=Post)
+pre_save.connect(rl_pre_save_receiver, sender=Category)
+pre_save.connect(rl_pre_save_receiver, sender=Tag)
