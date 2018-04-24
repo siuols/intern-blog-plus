@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 
 from django.views import View
 
-from .forms import PostForm
+from .forms import PostForm, TagForm, CategoryForm
 
 from .models import Category, Tag, Post
 
@@ -67,4 +67,44 @@ class PostCreateView(View):
             'form': form
         }
         return render(request, self.template_name, context)
+
+class PostEditView(View):
+    form_class = PostForm
+    initial = {'key': 'value'}
+    template_name = 'blog/post_edit.html'
+
+    def get(self, request, slug, *args, **kwargs):
+        post = get_object_or_404(Post, slug=slug)
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('blog:post-detail', slug = post.slug)
+        else:
+            form = PostForm(instance=post)
+        context = {
+            'form': form
+        }
+        return render(request, self.template_name, context)
+
+def  post_edit(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('blog:post-detail', slug=post.slug)
+    else:
+        form = PostForm(instance=post)
+    context = {
+        'form': form,
+    }
+    return render(request, 'blog/post_edit.html', context)
 
