@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 
+{% block head_title %}{{ post.title }} | {{ block.super }}{% endblock head_title %}
+
 {% block content %}
-  <p>a</p>
+  <img src="{{ post.banner_photo.url }}">
+  <p>{{ post.user }}</p>
+  <p><small>{{ post.date_created }}, Updated {{ post.date_modified|timesince }} ago</small></p>
+
+  {% for tag in post.tags.all %}
+    {% if forloop.last %}
+      <small>{{ tag }}</small>
+    {% else %}
+      <small>{{ tag }},</small>
+    {% endif %}
+  {% endfor %}
+  <p>{{ post.category }}</p>
+  <p>{{ post.body }}</p>
 {% endblock %}

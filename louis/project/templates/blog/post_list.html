@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 
-{% block head_title %}Blog | {{ block.super }}{% endblock head_title %}
-
 {% block content %}
   {% if post %}
     {% for post in post %}
-      <h1>{{ post.title }}</h1>
+      <h1><a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a></h1>
       <p><small>{{ post.subtitle }}</small></p>
       <p>{{ post.user }}</p>
       <p><small>{{ post.date_created }}</small></p>
@@ -15,7 +13,7 @@
         {% else %}
           <small>{{ tag }}</small>
         {% endif %}
-      <a href="">View more..</a>
+      View more..</a>
       {% endfor %}
     {% endfor %}
   {% else %}

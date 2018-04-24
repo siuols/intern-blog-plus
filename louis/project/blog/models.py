@@ -48,7 +48,7 @@ class Post(models.Model):
     user                    = models.ForeignKey(User, on_delete=models.CASCADE)
     title                   = models.CharField(max_length=255)
     subtitle                = models.CharField(max_length=255)
-    banner_photo            = models.ImageField()
+    banner_photo            = models.ImageField(upload_to='media')
     tags                    = models.ManyToManyField(Tag)
     category                = models.ForeignKey('Category', on_delete=models.CASCADE)
     body                    = models.TextField()
