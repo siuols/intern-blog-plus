@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>New post</h1>
-  <form method="POST" id="form" action="" enctype="multipart/form-data" class="infotabs accfrm">
+  <form method="post" id="form" action="" enctype="multipart/form-data" class="infotabs accfrm">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="OK">

@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 
-from .views import PostCreateView, post_edit, PostDetailView, PostEditView, PostListView, Home
+from .views import PostCreateView, post_edit, PostDetailView, PostListView, Home #PostEditView
 
 app_name = 'blog'
 
