@@ -71,6 +71,29 @@ class Post(models.Model):
     def slug_title(self):
         return '{}'.format(self.title)
 
+class Comment(models.Model):
+    user                    = models.ForeignKey(User, on_delete=models.CASCADE)
+    post                    = models.ForeignKey(
+                                                'Post',
+                                                on_delete=models.CASCADE,
+                                                related_name='comments'
+                                            )
+    text                    = models.TextField()
+    date_created            = models.DateTimeField(auto_now_add=True)
+    date_modified           = models.DateTimeField(auto_now=True)
+    slug                    = models.SlugField(null=True, blank=True)
+
+    def __str__(self):
+        return '{}'.format(self.text)
+
+    class Meta:
+        ordering = ['-id']
+
+    @property
+    def slug_title(self):
+        return '{}'.format(self.text)
+
+
 def rl_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
@@ -78,3 +101,4 @@ def rl_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(rl_pre_save_receiver, sender=Post)
 pre_save.connect(rl_pre_save_receiver, sender=Category)
 pre_save.connect(rl_pre_save_receiver, sender=Tag)
+pre_save.connect(rl_pre_save_receiver, sender=Comment)
