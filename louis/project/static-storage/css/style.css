@@ -1,0 +1,65 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway+Dots);
+
+html, body {
+  background-color:#d2dae2;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+    /*background-color: lightblue;*/
+}
+
+.back{
+  height: 75%;
+  width: 100%;
+  margin: auto;
+  opacity: 0.8;
+  background: url(http://2.bp.blogspot.com/-fJLCy4m8OD8/T9K7PlygFqI/AAAAAAAAHrY/MeFcYoPpHcI/s1600/IMG_4536.JPG);
+  display: table;
+  top: 0;
+  background-size: cover;
+}
+
+.back .inner{
+  display: table-cell;
+  vertical-align: left;
+  width: 100%;
+  max-width: none;
+}
+
+.contain{
+  max-width: 500px;
+  margin:0 auto;
+  text-align: center;
+}
+
+.contain h1{
+  font-family: 'Railway', sans-serif;
+  color: orange;
+  text-shadow: 0px 0px 300px #000;
+  font-size: 500%;
+  border-top: 100px;
+}
+
+.desc{
+  margin: 10px;
+}
+
+.about{
+  opacity: 0.8;
+  background: url(Durian.jpg);
+  display: table;
+  top: 0;
+  background-size: cover;
+  margin:60px 0px 100px 30px;
+  width: 300px;
+  height: 300px;
+  /*margin-right: 650px;
+  margin-top: 130px;*/
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 50%;
+
+}
+
+

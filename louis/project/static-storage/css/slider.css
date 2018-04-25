@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans');
+
+.slider {
+  max-width: 100%;
+  height: 90%;
+  width:100%;
+  margin: auto;
+  position: relative;
+}
+
+.slide1,.slide2,.slide3,.slide4,.slide5 h1 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-family: 'Gugi', cursive;
+}
+
+.slide1 {
+  background: url(http://www.kikomusic.com/wp-content/uploads/2016/12/music-colour-splash-634x422.jpg)no-repeat center;
+  background-size: cover;
+  animation:fade 8s infinite;
+  -webkit-animation:fade 8s infinite;
+
+}
+.slide2 {
+  background: url(https://whatthefaculty.com/wp-content/uploads/music-4.jpg)no-repeat center;
+  background-size: cover;
+  animation:fade2 8s infinite;
+  -webkit-animation:fade2 8s infinite;
+}
+
+.slide3 {
+  background: url(http://snaresbrookprep.org/wp-content/uploads/2016/03/music-notes.jpg)no-repeat center;
+  background-size: cover;
+  animation:fade3 8s infinite;
+  -webkit-animation:fade3 8s infinite;
+}
+
+@keyframes fade
+{
+  0%   {opacity:1}
+  33.333% { opacity: 0}
+  66.666% { opacity: 0}
+  100% { opacity: 1}
+}
+
+@keyframes fade2
+{
+  0%   {opacity:0}
+  33.333% { opacity: 1}
+  66.666% { opacity: 0 }
+  100% { opacity: 0}
+}
+
+@keyframes fade3
+{
+  0%   {opacity:0}
+  33.333% { opacity: 0}
+  66.666% { opacity: 1}
+  100% { opacity: 0}
+}
+
+.contain h1{
+  margin-top: 120px;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #4b4b4b;
+  text-shadow: 0px 0px 300px #000;
+  font-size: 500%;
+  border-top: 100%;
+  border-radius: 10px;
+  /*border: 3px solid;*/
+  float: center;
+  background-color: white;
+  opacity: 0.7;
+  text-shadow: 2px 2px #ff0000;
+}
+
+.align-text{
+  text-align: center;
+  border-bottom: 2px solid;
+  border-color: #4b4b4b;
+}
