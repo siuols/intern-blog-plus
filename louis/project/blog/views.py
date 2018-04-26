@@ -57,7 +57,7 @@ class PostDetailView(View):
         }
         return render(request, 'blog/post_detail.html', context)
 
-class PostCreateView(View):
+class PostCreateView(LoginRequiredMixin, View):
     form_class = PostForm
     initial = {'key': 'value'}
     template_name = 'blog/post_edit.html'
@@ -158,11 +158,6 @@ class RegisterFormView(View):
             'profile_form': profile_form,
         }
         return render(request, self.template_name, context)
-
-class IndexView(View):
-    def get(self, request, pk, *args, **kwargs):
-      index = get_object_or_404(Index, pk=pk)
-      post_list = index.post_set.filter(status='published')
 
 class ProfileDetailView(View):
     def get(self, request, username, *args, **kwargs):

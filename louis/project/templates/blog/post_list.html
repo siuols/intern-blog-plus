@@ -14,7 +14,7 @@
       <h1><a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a></h1>
       <p><small>{{ post.subtitle }}</small></p>
       <p>{{ post.title|truncatechars:150 }}</p>
-      <p>{{ post.user }}</p>
+      <a href="{% url 'blog:profile' post.user %}"> {{ post.user }}</a>
       <p><small>{{ post.date_created }}</small></p>
       {% for tag in post.tags.all %}
         {% if not forloop.last %}
