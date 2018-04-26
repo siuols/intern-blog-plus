@@ -1,6 +1,7 @@
 .nav {
   overflow: hidden;
   background-color: #333;
+  font-family: Arial, Helvetica, sans-serif;
   position: fixed;
   top: 0;
   width: 100%;
@@ -9,28 +10,26 @@
 .nav a {
   float: left;
   display: block;
-  color: #f2f2f2;
+  font-size: 16px;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
 }
 
-.nav a:hover {
+.down {
+    float: right;
+    overflow: hidden;
+}
+
+.down-user {
+    float: right;
+    overflow: hidden;
+    color: white;
+    padding-right: 5px
+}
+
+.nav a:hover, .down:hover {
   background: #ddd;
   color: black;
 }
-
-/*.box {
-  display: inline-block;
-  width: 200px;
-  height: 100px;
-  margin: 1em;
-}
-
-.box1 {
-  display: inline-block;
-  width: 300px;
-  height: 80px;
-  margin: 8em;
-}*/

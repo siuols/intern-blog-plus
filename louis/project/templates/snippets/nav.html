@@ -1,5 +1,20 @@
 <header>
   <nav class="nav">
     <a href="{% url 'blog:post-list' %}">Home</a>
+    {% if not request.user.is_authenticated %}
+    <div class="down">
+      <a href="{% url 'register'%}">Register</a>
+    </div>
+    <div class="down">
+      <a href="{% url 'login' %}">Login</a>
+    </div>
+    {% else %}
+    <div class="down">
+      <a href="{% url 'logout' %}">Logout</a>
+    </div>
+    <div class="down-user">
+      <p>Welcome <small>{{ user.username }}</small></p>
+    </div>
+    {% endif %}
   </nav>
 </header>
