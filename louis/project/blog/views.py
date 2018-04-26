@@ -168,7 +168,7 @@ class ProfileDetailView(View):
     def get(self, request, username, *args, **kwargs):
         profile_detail = get_object_or_404(User, username__iexact=username)
         post_list = profile_detail.post_set.filter(user=self.request.user, status='published')
-        paginator = Paginator(post_list, 5)
+        paginator = Paginator(post_list, 10)
         page = request.GET.get('page')
         try:
             post = paginator.page(page)
@@ -178,6 +178,6 @@ class ProfileDetailView(View):
             post = paginator.page(paginator.num_pages)
         context = {
             'profile_detail': profile_detail,
-            'post_list': post_list
+            'post': post,
         }
         return render(request, 'blog/profile_detail.html', context)
