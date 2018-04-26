@@ -9,6 +9,7 @@ from .views import (
         PostDetailView,
         PostListView,
         Home,
+        ProfileDetailView
         #PostEditView
     )
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path('post/<slug:slug>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('post/<slug:slug>/edit/', views.post_edit, name='post-edit'),
-    path('post/<slug:slug>/comment/', CommentView.as_view(), name='comment')
+    path('post/<slug:slug>/comment/', CommentView.as_view(), name='comment'),
+    path('profile/<username>/', ProfileDetailView.as_view(), name='profile')
     # path('post/draft/', views.post_draft, name='post-draft'),
 ]

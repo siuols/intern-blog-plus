@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save
 
 from django.conf import settings
 
@@ -104,10 +104,6 @@ class Profile(models.Model):
                             self.last_name
                         )
 
-# def post_save_user_receiver(sender, instance, created, *args, **kwargs):
-#     if created:
-#         proflie, is_created = Profile.objects.get_or_create(user=instance)
-
 def rl_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
@@ -116,4 +112,3 @@ pre_save.connect(rl_pre_save_receiver, sender=Post)
 pre_save.connect(rl_pre_save_receiver, sender=Category)
 pre_save.connect(rl_pre_save_receiver, sender=Tag)
 pre_save.connect(rl_pre_save_receiver, sender=Comment)
-# post_save.connect(post_save_user_receiver, sender=User)

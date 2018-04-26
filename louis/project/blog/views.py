@@ -80,33 +80,6 @@ class PostCreateView(View):
         }
         return render(request, self.template_name, context)
 
-# class PostEditView(View):
-#     form_class = PostForm
-#     # initial = {'key': 'value'}
-#     template_name = 'blog/post_edit.html'
-
-#     def get(self, request, slug, *args, **kwargs):
-#         post_user = Post.objects.filter(user=request.user)
-#         form = get_object_or_404(post_user, slug=slug)
-#         context = {
-#             'form': form,
-#         }
-#         return render(request, self.template_name, context)
-
-#     def post(self, request, *args, **kwargs):
-#         form = PostForm(request.POST, request.FILES, instance=post)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.user = request.user
-#             post.save()
-#             return redirect('blog:post-detail', slug = post.slug)
-#         else:
-#             form = PostForm(instance=post)
-#         context = {
-#             'form': form
-#         }
-#         return render(request, self.template_name, context)
-
 def  post_edit(request, slug):
     post_user = Post.objects.filter(user=request.user)
     post = get_object_or_404(post_user, slug=slug)
@@ -134,7 +107,6 @@ class CommentView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, slug, *args, **kwargs):
-        profile = Profile.objects.filter(user=user)
         post = get_object_or_404(Post, slug=slug)
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -145,15 +117,6 @@ class CommentView(View):
             return redirect('blog:post-detail', slug = post.slug)
         else:
             form = CommentForm()
-        context = {
-            'form': form,
-            'profile': profile,
-        }
-        return render(request, self.template_name, context)
-
-def get(self, request, slug, *args, **kwargs):
-        post_user = Post.objects.filter(user=request.user)
-        form = get_object_or_404(post_user, slug=slug)
         context = {
             'form': form,
         }
@@ -195,3 +158,26 @@ class RegisterFormView(View):
             'profile_form': profile_form,
         }
         return render(request, self.template_name, context)
+
+class IndexView(View):
+    def get(self, request, pk, *args, **kwargs):
+      index = get_object_or_404(Index, pk=pk)
+      post_list = index.post_set.filter(status='published')
+
+class ProfileDetailView(View):
+    def get(self, request, username, *args, **kwargs):
+        profile_detail = get_object_or_404(User, username__iexact=username)
+        post_list = profile_detail.post_set.filter(user=self.request.user, status='published')
+        paginator = Paginator(post_list, 5)
+        page = request.GET.get('page')
+        try:
+            post = paginator.page(page)
+        except PageNotAnInteger:
+            post = paginator.page(1)
+        except EmptyPage:
+            post = paginator.page(paginator.num_pages)
+        context = {
+            'profile_detail': profile_detail,
+            'post_list': post_list
+        }
+        return render(request, 'blog/profile_detail.html', context)
