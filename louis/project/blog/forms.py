@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from .models import Post, Tag, Category
+from .models import Category, Comment, Post, Tag
 
 User = get_user_model()
 
@@ -35,6 +35,13 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = [
             'title'
+        ]
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = [
+            'text'
         ]
 
 class RegistrationForm(forms.ModelForm):

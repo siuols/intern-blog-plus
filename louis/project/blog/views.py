@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 
 from django.views import View
 
-from .forms import PostForm, TagForm, CategoryForm, RegistrationForm
+from .forms import CommentForm, PostForm, TagForm, CategoryForm, RegistrationForm
 
 from .models import Category, Tag, Post
 
@@ -112,6 +112,31 @@ def  post_edit(request, slug):
         'form': form,
     }
     return render(request, 'blog/post_edit.html', context)
+
+class CommentView(View):
+    form_class = CommentForm
+    initial = {'key': 'value'}
+    template_name = 'blog/comment.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, slug, *args, **kwargs):
+        post = get_object_or_404(Post, slug=slug)
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            return redirect('blog:post-detail', slug = post.slug)
+        else:
+            form = CommentForm()
+        context = {
+            'form': form
+        }
+        return render(request, self.template_name, context)
 
 class RegisterFormView(View):
     form_class = RegistrationForm

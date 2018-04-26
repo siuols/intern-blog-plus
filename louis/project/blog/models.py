@@ -93,6 +93,16 @@ class Comment(models.Model):
     def slug_title(self):
         return '{}'.format(self.text)
 
+class Profile(models.Model):
+    user                    = models.ForeignKey(User, on_delete=models.CASCADE)
+    picture                 = models.ImageField(upload_to='media')
+    first_name              = models.CharField(max_length=255)
+    middle_name             = models.CharField(max_length=255)
+    last_name               = models.CharField(max_length=255)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.first_name, self.middle_name, self.last_name)
+
 
 def rl_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

@@ -11,7 +11,6 @@
 
   {% if post %}
     {% for post in post %}
-      <div class="box1">
       <h1><a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a></h1>
       <p><small>{{ post.subtitle }}</small></p>
       <p>{{ post.title|truncatechars:150 }}</p>
@@ -24,7 +23,7 @@
           <small>{{ tag }}</small>
         {% endif %}
       {% endfor %}
-      </div>
+      <a href="{% url 'blog:post-detail' slug=post.slug %}">Comments: {{ post.comments.count }}</a>
     {% endfor %}
   {% else %}
     <p>No post</p>

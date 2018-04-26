@@ -16,4 +16,20 @@
   {% endfor %}
   <p>{{ post.category }}</p>
   <p>{{ post.body }}</p>
+
+  <hr>
+  {% for comment in post.comments.all %}
+    {% if user.is_authenticated %}
+    <div class="comment">
+      <div class="date">
+        {{ comment.date_created }}
+      </div>
+      <strong>{{ comment.user }}</strong>
+      <p>{{ comment.text|linebreaks }}</p>
+    </div>
+    {% endif %}
+  {% empty %}
+    <p>No comments here yet :(</p>
+  {% endfor %}
+  <a class="btn btn-default" href="{% url 'blog:comment' slug=post.slug %}">Add comment</a>
 {% endblock %}
