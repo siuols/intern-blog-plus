@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from .models import Category, Comment, Post, Tag
+from .models import Category, Comment, Post, Profile, Tag
 
 User = get_user_model()
 
@@ -44,13 +44,26 @@ class CommentForm(forms.ModelForm):
             'text'
         ]
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = (
+                'picture',
+                'first_name',
+                'middle_name',
+                'last_name'
+            )
+
 class RegistrationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', min_length=8, widget=forms.PasswordInput, validators=[RegexValidator('^[-a-zA-Z0-9_]+$', message="Password should be a combination of Alphabets and Numbers")])
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ('username','email','first_name','last_name')
+        fields = (
+                'username',
+                'email'
+            )
 
     def clean_email(self):
         email = self.cleaned_data.get("email")

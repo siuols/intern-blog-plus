@@ -4,13 +4,24 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth import login, authenticate
 
+from django.contrib.auth.models import User
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.http import HttpResponseRedirect
 
 from django.views import View
 
-from .forms import CommentForm, PostForm, TagForm, CategoryForm, RegistrationForm
+from .forms import (
+            CommentForm,
+            CategoryForm,
+            TagForm,
+            RegistrationForm,
+            PostForm,
+            ProfileForm
+        )
 
-from .models import Category, Tag, Post
+from .models import Category, Tag, Post, Profile
 
 # Create your views here.
 
@@ -123,6 +134,7 @@ class CommentView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, slug, *args, **kwargs):
+        profile = Profile.objects.filter(user=user)
         post = get_object_or_404(Post, slug=slug)
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -134,31 +146,52 @@ class CommentView(View):
         else:
             form = CommentForm()
         context = {
-            'form': form
+            'form': form,
+            'profile': profile,
+        }
+        return render(request, self.template_name, context)
+
+def get(self, request, slug, *args, **kwargs):
+        post_user = Post.objects.filter(user=request.user)
+        form = get_object_or_404(post_user, slug=slug)
+        context = {
+            'form': form,
         }
         return render(request, self.template_name, context)
 
 class RegisterFormView(View):
     form_class = RegistrationForm
+    second_form_class = ProfileForm
     initial = {'key': 'value'}
     template_name = 'registration/register.html'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
+        user_form = self.form_class(initial=self.initial)
+        profile_form = self.second_form_class(initial=self.initial)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+        user_form = self.form_class(request.POST)
+        profile_form = self.second_form_class(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            username = user_form.cleaned_data.get('username')
+            raw_password = user_form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('login')
+            profile_form = profile_form.save(commit=False)
+            profile_form.user = request.user
+            profile_form.save()
+            return redirect('blog:post-list')
         else:
             form = RegistrationForm()
+            profile_form = ProfileForm()
         context = {
-            'form': form
+            'user_form': user_form,
+            'profile_form': profile_form,
         }
         return render(request, self.template_name, context)

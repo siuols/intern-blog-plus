@@ -86,9 +86,6 @@ class Comment(models.Model):
     def __str__(self):
         return '{}'.format(self.text)
 
-    class Meta:
-        ordering = ['-id']
-
     @property
     def slug_title(self):
         return '{}'.format(self.text)
@@ -101,11 +98,15 @@ class Profile(models.Model):
     last_name               = models.CharField(max_length=255)
 
     def __str__(self):
-        return '{} {} {}'.format(self.first_name, self.middle_name, self.last_name)
+        return '{} {} {}'.format(
+                            self.first_name,
+                            self.middle_name,
+                            self.last_name
+                        )
 
-def post_save_user_receiver(sender, instance, created, *args, **kwargs):
-    if created:
-        proflie, is_created = Profile.objects.get_or_create(user=instance)
+# def post_save_user_receiver(sender, instance, created, *args, **kwargs):
+#     if created:
+#         proflie, is_created = Profile.objects.get_or_create(user=instance)
 
 def rl_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
@@ -115,4 +116,4 @@ pre_save.connect(rl_pre_save_receiver, sender=Post)
 pre_save.connect(rl_pre_save_receiver, sender=Category)
 pre_save.connect(rl_pre_save_receiver, sender=Tag)
 pre_save.connect(rl_pre_save_receiver, sender=Comment)
-post_save.connect(post_save_user_receiver, sender=User)
+# post_save.connect(post_save_user_receiver, sender=User)

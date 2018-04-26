@@ -17,6 +17,8 @@
   <p>{{ post.category }}</p>
   <p>{{ post.body }}</p>
 
+  {{ user.first_name }}
+
   <hr>
   {% for comment in post.comments.all %}
     {% if user.is_authenticated %}
@@ -24,7 +26,7 @@
       <div class="date">
         {{ comment.date_created }}
       </div>
-      <strong>{{ comment.user }}</strong>
+      <strong>{{ comment.user.profile }}</strong>
       <p>{{ comment.text|linebreaks }}</p>
     </div>
     {% endif %}
