@@ -24,26 +24,29 @@
       <a href="{% url 'blog:post-detail' slug=post.slug %}">Comments: {{ post.comments.count }}</a>
     {% endfor %}
   {% else %}
-    <p>No post</p>
+    <p>No post yet</p>
   {% endif %}
 
 <div>
-  {% for page_num in post.paginator.page_range %}
-    <li>
-      <a href="?page={{ page_num }}">{{ page_num}}</a>
-    </li>
-  {% endfor %}
+  {% if post %}
+    {% for page_num in post.paginator.page_range %}
+      <li>
+        <a href="?page={{ page_num }}">{{ page_num}}</a>
+      </li>
+    {% endfor %}
+  {% endif %}
   <div>
     <span>
-      {% if post.has_previous %}
-        <a href="?page={{ post.previous_page_number }}">previous</a>
-      {% endif %}
-      <span>Page {{ post.number }} of {{ post.paginator.num_pages }}.</span>
-      {% if post.has_next %}
-        <a href="?page={{ post.next_page_number }}">next</a>
+      {% if post %}
+        {% if post.has_previous %}
+          <a href="?page={{ post.previous_page_number }}">previous</a>
+        {% endif %}
+        <span>Page {{ post.number }} of {{ post.paginator.num_pages }}.</span>
+        {% if post.has_next %}
+          <a href="?page={{ post.next_page_number }}">next</a>
+        {% endif %}
       {% endif %}
     </span>
   </div>
   </div>
-
 {% endblock %}

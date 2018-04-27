@@ -36,7 +36,7 @@ class Home(View):
 class PostListView(View):
     def get(self, request, *args, **kwargs):
         post_list = Post.objects.filter(status='published')
-        paginator = Paginator(post_list, 5)
+        paginator = Paginator(post_list, 6)
         page = request.GET.get('page')
         try:
             post = paginator.page(page)
@@ -80,7 +80,7 @@ class PostCreateView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
-def  post_edit(request, slug):
+def post_edit(request, slug):
     post_user = Post.objects.filter(user=request.user)
     post = get_object_or_404(post_user, slug=slug)
     if request.method == "POST":
@@ -96,6 +96,15 @@ def  post_edit(request, slug):
         'form': form,
     }
     return render(request, 'blog/post_edit.html', context)
+
+class PostDraftView(View):
+    def get(self, request, *args, **kwargs):
+        post = Post.objects.filter(status='draft')
+        context = {
+            'post': post,
+        }
+        return render(request,'blog/post_list.html', context)
+
 
 class CommentView(View):
     form_class = CommentForm

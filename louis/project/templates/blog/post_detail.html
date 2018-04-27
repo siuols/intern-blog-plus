@@ -2,36 +2,73 @@
 
 {% block head_title %}{{ post.title }} | {{ block.super }}{% endblock head_title %}
 
+{% load staticfiles %}
+
 {% block content %}
-  <img src="{{ post.banner_photo.url }}">
-  <p>{{ post.user }}</p>
-  <p><small>{{ post.date_created }}, Updated {{ post.date_modified|timesince }} ago</small></p>
 
-  {% for tag in post.tags.all %}
-    {% if forloop.last %}
-      <small>{{ tag }}</small>
-    {% else %}
-      <small>{{ tag }},</small>
-    {% endif %}
-  {% endfor %}
-  <p>{{ post.category }}</p>
-  <p>{{ post.body }}</p>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/button_animate.css' %}"/>
 
-  {{ user.first_name }}
+  <div class="card">
+    <img src="{{ post.banner_photo.url }}" alt="Avatar" style="width:100%">
+    <div class="container">
+      <div class="container-profile">
+        <div class="box">
+          <img src="{{ post.user.profile.picture.url }}" alt="Avatar">
+        </div>
+        <div class="box1">
 
-  <hr>
-  {% for comment in post.comments.all %}
-    {% if user.is_authenticated %}
-    <div class="comment">
-      <div class="date">
-        {{ comment.date_created }}
+          {% if user.is_authenticated %}
+            <a href="{% url 'blog:post-edit' post.slug %}">Edit post</a>
+          {% endif %}
+
+          <h3><b>{{ post.user.profile }}</b></h3><p><small class="date">{{ post.date_created }}, Updated {{ post.date_modified|timesince }} ago</small></p>
+          <h4>{{ post.title }}</h4>
+          <p>{{ post.body }}</p>
+          <p class="date">Tags:
+            {% for tag in post.tags.all %}
+              {% if forloop.last %}
+                <small class="date">{{ tag }}</small>
+              {% else %}
+                <small class="date">{{ tag }},</small>
+              {% endif %}
+            {% endfor %}
+          </p>
+          <p class="date">Category: {{ post.category }}</p>
+        </div>
       </div>
-      <strong>{{ comment.user.profile }}</strong>
-      <p>{{ comment.text|linebreaks }}</p>
+    </div>
+    {% for comment in post.comments.all %}
+      {% if user.is_authenticated %}
+      <div class="card-comment">
+        <div class="comment">
+          <div class="box">
+            <img src="{{ comment.user.profile.picture.url }}" alt="Avatar">
+          </div>
+          <div class="box1">
+            <strong>{{ comment.user.profile }}</strong>
+            <div class="date">
+              {{ comment.date_created }}
+            </div>
+            <p>{{ comment.text|linebreaks }}</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% empty %}
+      <p>No comments here yet :(</p>
+    {% endfor %}
+    {% if user.is_authenticated %}
+      <div class="position-btn">
+        <a class="button" href="{% url 'blog:comment' slug=post.slug %}"><span>Add comment</span></a>
+      </div>
+    {% else %}
+      <div class="position-btn">
+        <a class="button" href="{% url 'login' %}"><span>Add comment</span></a>
     </div>
     {% endif %}
-  {% empty %}
-    <p>No comments here yet :(</p>
-  {% endfor %}
-  <a class="btn btn-default" href="{% url 'blog:comment' slug=post.slug %}">Add comment</a>
+    </div>
+  </div>
 {% endblock %}
+
+
